@@ -259,21 +259,7 @@ strong { font-weight: 700; }
   border-top: 1px solid #E5E5E8;
 }
 
-.site-nav__progress {
-  height: 6px;
-  background: var(--c-blue-light);
-  position: relative;
-}
 
-.site-nav__progress-fill {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 0%;
-  background: var(--c-blue);
-  transition: width 0.1s linear;
-}
 
 .site-nav__inner {
   display: flex;
@@ -300,6 +286,15 @@ strong { font-weight: 700; }
 }
 
 .site-nav__link:hover { color: var(--c-black); }
+
+.site-nav__link--active,
+a.tag.tag--default.site-nav__link--active {
+  background: var(--c-grey-100);
+  border: 1px solid var(--c-keyline);
+  border-radius: 8px;
+  color: var(--c-black);
+  padding: 4px 10px;
+}
 
 /* ============================================================
    HERO

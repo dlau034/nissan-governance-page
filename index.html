@@ -12,12 +12,9 @@
        NAV
   ═══════════════════════════════════════════════════════ -->
   <nav class="site-nav" aria-label="Page sections">
-    <div class="site-nav__progress" aria-hidden="true">
-      <div class="site-nav__progress-fill"></div>
-    </div>
     <div class="site-nav__inner">
       <div class="site-nav__links">
-        <a href="#scope" class="tag tag--default">1 · Scope</a>
+        <a href="#scope" class="site-nav__link">1 · Scope</a>
         <a href="#form-contents" class="site-nav__link">2 · Form Contents</a>
         <a href="#engagement" class="site-nav__link">3 · Service menu</a>
         <a href="#project-type" class="site-nav__link">4 · Project type</a>
@@ -848,16 +845,30 @@
 
   <script>
     (function () {
-      const fill = document.querySelector('.site-nav__progress-fill');
-      if (!fill) return;
-      function updateProgress() {
-        const scrollTop = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const pct = docHeight > 0 ? Math.min(scrollTop / docHeight, 1) * 100 : 0;
-        fill.style.width = pct + '%';
+      const links = Array.from(document.querySelectorAll('.site-nav__link'));
+      const sectionIds = links.map(l => l.getAttribute('href').slice(1));
+      const sections = sectionIds.map(id => document.getElementById(id)).filter(Boolean);
+
+      function setActive(id) {
+        links.forEach(l => l.classList.toggle('site-nav__link--active', l.getAttribute('href') === '#' + id));
       }
-      window.addEventListener('scroll', updateProgress, { passive: true });
-      updateProgress();
+
+      function onScroll() {
+        // Find the last section whose top edge has passed the viewport 40% mark
+        const trigger = window.innerHeight * 0.4;
+        let current = sections[0].id;
+        sections.forEach(s => {
+          if (s.getBoundingClientRect().top <= trigger) current = s.id;
+        });
+        setActive(current);
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Instant highlight on click (overrides scroll briefly)
+      links.forEach(l => l.addEventListener('click', () => setActive(l.getAttribute('href').slice(1))));
+
+      onScroll(); // initialise on load
     })();
   </script>
 
